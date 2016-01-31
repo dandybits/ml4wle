@@ -2,9 +2,9 @@
 title: "Prediction Assignment Writeup for JHU/Coursera Practical Machine Learning Class"
 author: "dandybits"
 output:
+  pdf_document: default
   html_document:
     keep_md: yes
-  pdf_document: default
 ---
 **Synopsis:** This project involves analyzing of the Weight Lifting Exercises (WLE) Dataset. This document describes the approach for building classification model that allows distinguishing properly conducted weight lifting exercise movements from those conducted with common mistakes. 
 
@@ -52,6 +52,14 @@ The aboove approach gave 100% accurate results on the prediction quiz.
 ```{r}
 predict(fit.winonly.rpart, wle.grade, type = "class")
 ```
+
+The approach also works fairly well on the allocated test set
+```{r}
+wle.test.pred.winonly.rpart <- predict(fit.winonly.rpart, wle.test, type = "class")
+conf.winonly <- confusionMatrix(wle.test$classe, wle.test.pred.winonly.rpart)
+conf.winonly$table
+```
+generating good periction with overall accuracy `r conf.winonly$overall[[1]]`.
 
 #### Predicting based on meaningful predictors
 

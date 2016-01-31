@@ -55,6 +55,25 @@ predict(fit.winonly.rpart, wle.grade, type = "class")
 ## Levels: A B C D E
 ```
 
+The approach also works fairly well on the allocated test set
+
+```r
+wle.test.pred.winonly.rpart <- predict(fit.winonly.rpart, wle.test, type = "class")
+conf.winonly <- confusionMatrix(wle.test$classe, wle.test.pred.winonly.rpart)
+conf.winonly$table
+```
+
+```
+##           Reference
+## Prediction    A    B    C    D    E
+##          A 1664   10    0    0    0
+##          B    0 1129   10    0    0
+##          C    0    0 1026    0    0
+##          D    0    0    0  964    0
+##          E   13    3    0    8 1058
+```
+generating good periction with overall accuracy 0.9925234.
+
 #### Predicting based on meaningful predictors
 
 Work in progress.
