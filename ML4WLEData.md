@@ -6,21 +6,37 @@ This research was conducted as a test assignment for the [Data Science Certifica
 
 For more information about collection and original analyis of the WLE dataset see research article [Qualitative Activity Recognition of Weight Lifting Exercises]( http://groupware.les.inf.puc-rio.br/har#weight_lifting_exercises#ixzz3ylUwfOl8) by Velloso, E.; Bulling, A.; Gellersen, H.; Ugulino, W.; Fuks, H. 
 
-You can embed an R code chunk like this:
+#### Exploring the WLE dataset
+The first step in data analysis is loading the data and converting it into a data.table format that makes available a richer data processing capabilities than default dataframe format. 
 
 
 ```r
-summary(cars)
+## load libraries
+library(lattice)
+library(ggplot2)
+library(caret)
+
+## load data into data frame
+wle.data <- read.csv("data\\pml-training.csv")
 ```
 
-```
-##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00
+#### Observation notes on WLE dataset
+As described in the paper referenced above as well as revealed in exploring the data, the dataset contains records with various levels of granularity. There are 'timestamp'-level records that contain a set of sensor measurements as well as 'summary' records that contained averaged measurements for time windows of several sizes from 0.5 sec to 2.5 sec.
+This makes the task somewhat ambiguous. We are trying to predict if a record belongs to a properly exectuted movement while any meaningful classification only applies at the level of the entire set of records for a particular movement. 
+
+Moreover, since the surrogate identifier for the movement, num_window attribute, is present in the test data set, it is possible to predict based on the num_window attribute alone. 
+
+While this may seem trivial, similar 'over_inclusive' datasets occasionally caused unintended results even in high-profile ML competitions.  
+
+#### Predicting based on window_num only
+
+```r
+## splitting data for model validation
+inTrain <- createDataPartition(wle.data$classe, p = 0.7, list = FALSE)
+wle.train <- wle.data[inTrain,]
+wle.test <- wle.data[inTrain,]
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+#### Predicting based on meaningful predictors 
+
+#### Conclusions
