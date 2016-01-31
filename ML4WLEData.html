@@ -76,9 +76,11 @@ img {
 library(lattice)
 library(ggplot2)
 library(caret)
+library(rpart)
 
-## load data into data frame
-wle.data &lt;- read.csv(&quot;data\\pml-training.csv&quot;)</code></pre>
+## load data 
+wle.data &lt;- read.csv(&quot;data\\pml-training.csv&quot;)
+wle.grade &lt;- read.csv(&quot;data\\pml-testing.csv&quot;)</code></pre>
 </div>
 <div id="observation-notes-on-wle-dataset" class="section level4">
 <h4>Observation notes on WLE dataset</h4>
@@ -89,9 +91,16 @@ wle.data &lt;- read.csv(&quot;data\\pml-training.csv&quot;)</code></pre>
 <div id="predicting-based-on-window_num-only" class="section level4">
 <h4>Predicting based on window_num only</h4>
 <pre class="r"><code>## splitting data for model validation
+set.seed(130265)
 inTrain &lt;- createDataPartition(wle.data$classe, p = 0.7, list = FALSE)
 wle.train &lt;- wle.data[inTrain,]
-wle.test &lt;- wle.data[inTrain,]</code></pre>
+wle.test &lt;- wle.data[-inTrain,]
+fit.winonly.rpart &lt;- rpart(classe ~ num_window, data=wle.train, method = &quot;class&quot;, cp=0.0025)</code></pre>
+<p>The aboove approach gave 100% accurate results on the prediction quiz.</p>
+<pre class="r"><code>predict(fit.winonly.rpart, wle.grade, type = &quot;class&quot;)</code></pre>
+<pre><code>##  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 
+##  B  A  B  A  A  E  D  B  A  A  B  C  B  A  E  E  A  B  B  B 
+## Levels: A B C D E</code></pre>
 </div>
 <div id="predicting-based-on-meaningful-predictors" class="section level4">
 <h4>Predicting based on meaningful predictors</h4>

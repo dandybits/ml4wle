@@ -15,9 +15,11 @@ The first step in data analysis is loading the data and converting it into a dat
 library(lattice)
 library(ggplot2)
 library(caret)
+library(rpart)
 
-## load data into data frame
+## load data 
 wle.data <- read.csv("data\\pml-training.csv")
+wle.grade <- read.csv("data\\pml-testing.csv")
 ```
 
 #### Observation notes on WLE dataset
@@ -32,9 +34,23 @@ While this may seem trivial, similar 'over_inclusive' datasets occasionally caus
 
 ```r
 ## splitting data for model validation
+set.seed(130265)
 inTrain <- createDataPartition(wle.data$classe, p = 0.7, list = FALSE)
 wle.train <- wle.data[inTrain,]
-wle.test <- wle.data[inTrain,]
+wle.test <- wle.data[-inTrain,]
+fit.winonly.rpart <- rpart(classe ~ num_window, data=wle.train, method = "class", cp=0.0025)
+```
+
+The aboove approach gave 100% accurate results on the prediction quiz. 
+
+```r
+predict(fit.winonly.rpart, wle.grade, type = "class")
+```
+
+```
+##  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 
+##  B  A  B  A  A  E  D  B  A  A  B  C  B  A  E  E  A  B  B  B 
+## Levels: A B C D E
 ```
 
 #### Predicting based on meaningful predictors 
