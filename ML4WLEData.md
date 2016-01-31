@@ -2,9 +2,9 @@
 dandybits  
 **Synopsis:** This project involves analyzing of the Weight Lifting Exercises (WLE) Dataset. This document describes the approach for building classification model that allows to distinguish properly conducted weight lifting excercise movements from those conducted with common mistakes. 
 
-This research was conducted as a test assignment for the [Data Science Certification on Coursera.](https://www.coursera.org/specializations/jhudatascienc)  
+This research was conducted as a test assignment for the [Data Science Certification on Coursera.](https://www.coursera.org/specializations/jhudatascienc). The code for this assignment is [available on Github](https://github.com/dandybits/ml4wle)  
 
-For more information about collection and original analyis of the WLE dataset see research article [Qualitative Activity Recognition of Weight Lifting Exercises]( http://groupware.les.inf.puc-rio.br/har#weight_lifting_exercises#ixzz3ylUwfOl8) by Velloso, E.; Bulling, A.; Gellersen, H.; Ugulino, W.; Fuks, H. 
+For more information about the collection and the original analyis of the WLE dataset see research article [Qualitative Activity Recognition of Weight Lifting Exercises]( http://groupware.les.inf.puc-rio.br/har#weight_lifting_exercises#ixzz3ylUwfOl8) by Velloso, E.; Bulling, A.; Gellersen, H.; Ugulino, W.; Fuks, H. 
 
 #### Exploring the WLE dataset
 The first step in data analysis is loading the data and converting it into a data.table format that makes available a richer data processing capabilities than default dataframe format. 
