@@ -76,9 +76,57 @@ generating good prediction with overall accuracy 0.9925234.
 
 Reducing cp argument above (from its default value of 0.01) leads to better accuracy traded for the larger tree size and the increased processing time. 
 
-#### Predicting based on meaningful predictors
+#### Predicting based on sensor measurements
+It is expected that we can get an accurate prediction for the classe variable if we properly select a set of predictors and fit a model using one of the popular methods. However, the nature of the dataset makes me doubt that it can by ifself provide a sufficient material for 'learning' data patterns. The main deficiency is that the dataset is extremely limited and it prominently carries characterisitcs of participants. While it is not an intended goal of the assignment, it can be shown that almost any small set of variables with almost any model can reliably predict a participant. 
 
-Work in progress.
+This is illustarted below by fitting a random forest model on a set of sensor measurements selected without any particular startegy. Nevertheless, the accuracy of the participant identification, regardless of the quality of the movement, is very high. 
+
+```r
+fit.rf.user.wle.train <- train(user_name ~ magnet_arm_x + 
+                                           magnet_arm_y + 
+                                           magnet_arm_z + 
+                                           magnet_belt_x + 
+                                           magnet_belt_y + 
+                                           magnet_belt_z + 
+                                           magnet_dumbbell_x + 
+                                           magnet_dumbbell_y + 
+                                           magnet_dumbbell_z + 
+                                           magnet_forearm_x + 
+                                           magnet_forearm_y + 
+                                           magnet_forearm_z, 
+                                data = wle.train, method = "rf", ntree = 20)
+```
+
+```
+## Loading required package: randomForest
+## randomForest 4.6-12
+## Type rfNews() to see new features/changes/bug fixes.
+```
+
+```r
+pred.rf.user.wle.test <- predict(fit.rf.user.wle.train, wle.test)
+conf.rf.user <- confusionMatrix(pred.rf.user.wle.test, wle.test$user_name)
+conf.rf.user$table
+```
+
+```
+##           Reference
+## Prediction adelmo carlitos charles eurico jeremy pedro
+##   adelmo     1120        0       0      0      0     0
+##   carlitos      0      949       0      0      0     0
+##   charles       0        1    1073      0      0     0
+##   eurico        0        0       0    929      0     0
+##   jeremy        0        0       0      0   1019     0
+##   pedro         0        0       0      0      0   794
+```
+
+```r
+conf.rf.user$overall[[1]]
+```
+
+```
+## [1] 0.9998301
+```
 
 #### Research alternatives 
 

@@ -115,9 +115,39 @@ conf.winonly$table</code></pre>
 <p>generating good prediction with overall accuracy 0.9925234.</p>
 <p>Reducing cp argument above (from its default value of 0.01) leads to better accuracy traded for the larger tree size and the increased processing time.</p>
 </div>
-<div id="predicting-based-on-meaningful-predictors" class="section level4">
-<h4>Predicting based on meaningful predictors</h4>
-<p>Work in progress.</p>
+<div id="predicting-based-on-sensor-measurements" class="section level4">
+<h4>Predicting based on sensor measurements</h4>
+<p>It is expected that we can get an accurate prediction for the classe variable if we properly select a set of predictors and fit a model using one of the popular methods. However, the nature of the dataset makes me doubt that it can by ifself provide a sufficient material for ‘learning’ data patterns. The main deficiency is that the dataset is extremely limited and it prominently carries characterisitcs of participants. While it is not an intended goal of the assignment, it can be shown that almost any small set of variables with almost any model can reliably predict a participant.</p>
+<p>This is illustarted below by fitting a random forest model on a set of sensor measurements selected without any particular startegy. Nevertheless, the accuracy of the participant identification, regardless of the quality of the movement, is very high.</p>
+<pre class="r"><code>fit.rf.user.wle.train &lt;- train(user_name ~ magnet_arm_x + 
+                                           magnet_arm_y + 
+                                           magnet_arm_z + 
+                                           magnet_belt_x + 
+                                           magnet_belt_y + 
+                                           magnet_belt_z + 
+                                           magnet_dumbbell_x + 
+                                           magnet_dumbbell_y + 
+                                           magnet_dumbbell_z + 
+                                           magnet_forearm_x + 
+                                           magnet_forearm_y + 
+                                           magnet_forearm_z, 
+                                data = wle.train, method = &quot;rf&quot;, ntree = 20)</code></pre>
+<pre><code>## Loading required package: randomForest
+## randomForest 4.6-12
+## Type rfNews() to see new features/changes/bug fixes.</code></pre>
+<pre class="r"><code>pred.rf.user.wle.test &lt;- predict(fit.rf.user.wle.train, wle.test)
+conf.rf.user &lt;- confusionMatrix(pred.rf.user.wle.test, wle.test$user_name)
+conf.rf.user$table</code></pre>
+<pre><code>##           Reference
+## Prediction adelmo carlitos charles eurico jeremy pedro
+##   adelmo     1120        0       0      0      0     0
+##   carlitos      0      949       0      0      0     0
+##   charles       0        1    1073      0      0     0
+##   eurico        0        0       0    929      0     0
+##   jeremy        0        0       0      0   1019     0
+##   pedro         0        0       0      0      0   794</code></pre>
+<pre class="r"><code>conf.rf.user$overall[[1]]</code></pre>
+<pre><code>## [1] 0.9998301</code></pre>
 </div>
 <div id="research-alternatives" class="section level4">
 <h4>Research alternatives</h4>
