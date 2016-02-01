@@ -95,7 +95,7 @@ set.seed(130265)
 inTrain &lt;- createDataPartition(wle.data$classe, p = 0.7, list = FALSE)
 wle.train &lt;- wle.data[inTrain,]
 wle.test &lt;- wle.data[-inTrain,]
-fit.winonly.rpart &lt;- rpart(classe ~ num_window, data=wle.train, method = &quot;class&quot;, cp=0.0025)</code></pre>
+fit.winonly.rpart &lt;- rpart(classe ~ num_window, data=wle.train, method = &quot;class&quot;, cp = 0.0025)</code></pre>
 <p>The aboove approach gave 100% accurate results on the prediction quiz.</p>
 <pre class="r"><code>predict(fit.winonly.rpart, wle.grade, type = &quot;class&quot;)</code></pre>
 <pre><code>##  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 
@@ -112,7 +112,8 @@ conf.winonly$table</code></pre>
 ##          C    0    0 1026    0    0
 ##          D    0    0    0  964    0
 ##          E   13    3    0    8 1058</code></pre>
-<p>generating good periction with overall accuracy 0.9925234.</p>
+<p>generating good prediction with overall accuracy 0.9925234.</p>
+<p>Reducing cp argument above (from its default value of 0.01) leads to better accuracy traded for the larger tree size and the increased processing time.</p>
 </div>
 <div id="predicting-based-on-meaningful-predictors" class="section level4">
 <h4>Predicting based on meaningful predictors</h4>

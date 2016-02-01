@@ -2,9 +2,9 @@
 title: "Prediction Assignment Writeup for JHU/Coursera Practical Machine Learning Class"
 author: "dandybits"
 output:
-  pdf_document: default
   html_document:
     keep_md: yes
+  pdf_document: default
 ---
 **Synopsis:** This project involves analyzing of the Weight Lifting Exercises (WLE) Dataset. This document describes the approach for building classification model that allows distinguishing properly conducted weight lifting exercise movements from those conducted with common mistakes. 
 
@@ -45,7 +45,7 @@ set.seed(130265)
 inTrain <- createDataPartition(wle.data$classe, p = 0.7, list = FALSE)
 wle.train <- wle.data[inTrain,]
 wle.test <- wle.data[-inTrain,]
-fit.winonly.rpart <- rpart(classe ~ num_window, data=wle.train, method = "class", cp=0.0025)
+fit.winonly.rpart <- rpart(classe ~ num_window, data=wle.train, method = "class", cp = 0.0025)
 ```
 
 The aboove approach gave 100% accurate results on the prediction quiz. 
@@ -59,7 +59,9 @@ wle.test.pred.winonly.rpart <- predict(fit.winonly.rpart, wle.test, type = "clas
 conf.winonly <- confusionMatrix(wle.test$classe, wle.test.pred.winonly.rpart)
 conf.winonly$table
 ```
-generating good periction with overall accuracy `r conf.winonly$overall[[1]]`.
+generating good prediction with overall accuracy `r conf.winonly$overall[[1]]`.
+
+Reducing cp argument above (from its default value of 0.01) leads to better accuracy traded for the larger tree size and the increased processing time. 
 
 #### Predicting based on meaningful predictors
 

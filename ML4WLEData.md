@@ -40,7 +40,7 @@ set.seed(130265)
 inTrain <- createDataPartition(wle.data$classe, p = 0.7, list = FALSE)
 wle.train <- wle.data[inTrain,]
 wle.test <- wle.data[-inTrain,]
-fit.winonly.rpart <- rpart(classe ~ num_window, data=wle.train, method = "class", cp=0.0025)
+fit.winonly.rpart <- rpart(classe ~ num_window, data=wle.train, method = "class", cp = 0.0025)
 ```
 
 The aboove approach gave 100% accurate results on the prediction quiz. 
@@ -72,7 +72,9 @@ conf.winonly$table
 ##          D    0    0    0  964    0
 ##          E   13    3    0    8 1058
 ```
-generating good periction with overall accuracy 0.9925234.
+generating good prediction with overall accuracy 0.9925234.
+
+Reducing cp argument above (from its default value of 0.01) leads to better accuracy traded for the larger tree size and the increased processing time. 
 
 #### Predicting based on meaningful predictors
 
